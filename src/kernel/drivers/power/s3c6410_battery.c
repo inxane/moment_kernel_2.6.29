@@ -146,6 +146,10 @@ static int batt_low;
 static int batt_critical;
 static int batt_min;
 static int batt_off;
+static int batt_eight;
+static int batt_six;
+static int batt_four;
+static int batt_two;
 #ifdef __ADJUST_RECHARGE_ADC__
 static int batt_recharging;
 #endif /* __ADJUST_RECHARGE_ADC__ */
@@ -597,44 +601,81 @@ static int s3c_get_bat_level(struct power_supply *bat_ps)
 				s3c_bat_info.bat_info.batt_is_full)
 			bat_level = 100;
 		else
-			bat_level = 90;
+			bat_level = 95;
 
 #ifdef __CHECK_CHG_CURRENT__
 		if (s3c_bat_info.bat_info.charging_enabled) {
 			check_chg_current(bat_ps);
 			if (!s3c_bat_info.bat_info.batt_is_full)
-				bat_level = 90;
+				bat_level = 95;
 		}
 #endif /* __CHECK_CHG_CURRENT__ */
 		dev_dbg(dev, "%s: (full)level = %d\n", __func__, bat_level );
-	} else if (batt_full >= bat_vol && bat_vol > batt_almost) {
-		int temp = (batt_full - batt_almost) / 2;
-		if (bat_vol > (batt_almost + temp))
-			bat_level = 80;
+	
+	} else if (batt_full >= bat_vol && bat_vol > batt_eight) {
+		int temp = (batt_full - batt_eight) / 2;
+		if (bat_vol > (batt_eight + temp))
+			bat_level = 90;
 		else
-			bat_level = 70;
+			bat_level = 85;
 
 		if (s3c_bat_info.bat_info.batt_is_recharging)
 			bat_level = 100;
 
+	} else if (batt_eight >= bat_vol && bat_vol > batt_almost) {
+		int temp = (batt_eight - batt_almost) / 2;
+		if (bat_vol > (batt_almost + temp))
+			bat_level = 80;
+		else
+			bat_level = 75;
+
 		dev_dbg(dev, "%s: (almost)level = %d\n", __func__, bat_level);
-	} else if (batt_almost >= bat_vol && bat_vol > batt_high) {
-		int temp = (batt_almost - batt_high) / 2;
+
+	} else if (batt_almost >= bat_vol && bat_vol > batt_six) {
+		int temp = (batt_almost - batt_six) / 2;
+		if (bat_vol > (batt_six + temp))
+			bat_level = 70;
+		else
+			bat_level = 65;
+
+
+	} else if (batt_six >= bat_vol && bat_vol > batt_high) {
+		int temp = (batt_six - batt_high) / 2;
 		if (bat_vol > (batt_high + temp))
 			bat_level = 60;
 		else
-			bat_level = 50;
+			bat_level = 55;
 		dev_dbg(dev, "%s: (high)level = %d\n", __func__, bat_level );
-	} else if (batt_high >= bat_vol && bat_vol > batt_medium) {
-		int temp = (batt_high - batt_medium) / 2;
+
+
+	} else if (batt_high >= bat_vol && bat_vol > batt_four) {
+		int temp = (batt_high - batt_four) / 2;
+		if (bat_vol > (batt_four + temp))
+			bat_level = 50;
+		else
+			bat_level = 45;
+
+	} else if (batt_four >= bat_vol && bat_vol > batt_medium) {
+		int temp = (batt_four - batt_medium) / 2;
 		if (bat_vol > (batt_medium + temp))
 			bat_level = 40;
 		else
-			bat_level = 30;
+			bat_level = 35;
 		dev_dbg(dev, "%s: (med)level = %d\n", __func__, bat_level);
-	} else if (batt_medium >= bat_vol && bat_vol > batt_low) {
+	
+	} else if (batt_medium >= bat_vol && bat_vol > batt_two) {
+		int temp = (batt_medium - batt_two) / 2;
+		if (bat_vol > (batt_two + temp))
+			bat_level = 30;
+		else
+			bat_level = 25;
+
+	} else if (batt_two >= bat_vol && bat_vol > batt_low) {
 		bat_level = 15;
-		dev_dbg(dev, "%s: (low)level = %d\n", __func__, bat_level);
+		
+	dev_dbg(dev, "%s: (low)level = %d\n", __func__, bat_level);
+
+dev_dbg(dev, "%s: (low)level = %d\n", __func__, bat_level);
 	} else if (batt_low >= bat_vol && bat_vol > batt_critical) {
 		bat_level = 5;
 		dev_dbg(dev, "%s: (cri)level = %d, vol = %d\n", __func__,
@@ -702,14 +743,14 @@ static int s3c_get_bat_level(struct power_supply *bat_ps)
 		check_recharging_bat(bat_vol);
 #endif /* __ADJUST_RECHARGE_ADC__ */
 		dev_dbg(dev, "%s: (full)level = %d\n", __func__, bat_level );
-	} else if (batt_full >= bat_vol && bat_vol > batt_almost) {
-		int temp = (batt_full - batt_almost) / 3;
-		if (bat_vol > (batt_almost + temp * 2))
+	
+
+	} else if (batt_full >= bat_vol && bat_vol > batt_eight) {
+		int temp = (batt_full - batt_eight) / 2;
+		if (bat_vol > (batt_eight + temp))
 			bat_level = 90;
-		else if (bat_vol > (batt_almost + temp))
-			bat_level = 80;
 		else
-			bat_level = 70;
+			bat_level = 80;
 
 		if (s3c_bat_info.bat_info.batt_is_recharging)
 			bat_level = 100;
@@ -722,13 +763,22 @@ static int s3c_get_bat_level(struct power_supply *bat_ps)
 			bat_level = 100;
 		}
 		dev_dbg(dev, "%s: (almost)level = %d\n", __func__, bat_level);
-	} else if (batt_almost >= bat_vol && bat_vol > batt_high) {
+	} else if (batt_eight >= bat_vol && bat_vol > batt_almost) {
+		bat_level = 70;
+		dev_dbg(dev, "%s: (almost)level = %d\n", __func__, bat_level );
+	} else if (batt_almost >= bat_vol && bat_vol > batt_six) {
+		bat_level = 60;
+	} else if (batt_six >= bat_vol && bat_vol > batt_high) {
 		bat_level = 50;
 		dev_dbg(dev, "%s: (high)level = %d\n", __func__, bat_level );
-	} else if (batt_high >= bat_vol && bat_vol > batt_medium) {
+	} else if (batt_high >= bat_vol && bat_vol > batt_four) {
+		bat_level = 40;
+	} else if (batt_four >= bat_vol && bat_vol > batt_medium) {
 		bat_level = 30;
 		dev_dbg(dev, "%s: (med)level = %d\n", __func__, bat_level);
-	} else if (batt_medium >= bat_vol && bat_vol > batt_low) {
+	} else if (batt_medium >= bat_vol && bat_vol > batt_two) {
+		bat_level = 20;
+	} else if (batt_two >= bat_vol && bat_vol > batt_low) {
 		bat_level = 15;
 		dev_dbg(dev, "%s: (low)level = %d\n", __func__, bat_level);
 	} else if (batt_low >= bat_vol && bat_vol > batt_critical) {
@@ -749,6 +799,7 @@ static int s3c_get_bat_level(struct power_supply *bat_ps)
 				bat_level, bat_vol);
 	}
 	dev_dbg(dev, "%s: level = %d\n", __func__, bat_level);
+
 
 __end__:
 	dev_dbg(dev, "%s: bat_vol = %d, level = %d, is_full = %d\n",
@@ -1391,16 +1442,20 @@ static void s3c_bat_set_vol_cal(int batt_cal)
 		return;
 	}
 
-	batt_max = batt_cal + BATT_MAXIMUM;
-	batt_full = batt_cal + BATT_FULL;
-	batt_safe_rech = batt_cal + BATT_SAFE_RECHARGE;
-	batt_almost = batt_cal + BATT_ALMOST_FULL;
-	batt_high = batt_cal + BATT_HIGH;
-	batt_medium = batt_cal + BATT_MED;
-	batt_low = batt_cal + BATT_LOW;
-	batt_critical = batt_cal + BATT_CRITICAL;
-	batt_min = batt_cal + BATT_MINIMUM;
-	batt_off = batt_cal + BATT_OFF;
+	batt_max = BATT_CAL + BATT_MAXIMUM;
+	batt_full = BATT_CAL + BATT_FULL;
+	batt_safe_rech = BATT_CAL + BATT_SAFE_RECHARGE;
+	batt_almost = BATT_CAL + BATT_ALMOST_FULL;
+	batt_high = BATT_CAL + BATT_HIGH;
+	batt_medium = BATT_CAL + BATT_MED;
+	batt_low = BATT_CAL + BATT_LOW;
+	batt_critical = BATT_CAL + BATT_CRITICAL;
+	batt_min = BATT_CAL + BATT_MINIMUM;
+	batt_off = BATT_CAL + BATT_OFF;
+	batt_eight = BATT_CAL + BATT_EIGHT;
+	batt_six = BATT_CAL + BATT_SIX;
+	batt_four = BATT_CAL + BATT_FOUR;
+	batt_two = BATT_CAL + BATT_TWO;
 }
 
 #ifdef COMPENSATE_BOOTING

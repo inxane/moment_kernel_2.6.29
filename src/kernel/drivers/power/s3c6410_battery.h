@@ -20,14 +20,20 @@
 
 #define BATT_MAXIMUM		59	/* 4.19V */
 #define BATT_SAFE_RECHARGE	51	/* 4.10V */
-#define BATT_FULL		40	/* 3.98V */
-#define BATT_ALMOST_FULL	29	/* 3.85V */
-#define BATT_HIGH		21	/* 3.75V */
-#define BATT_MED		17	/* 3.71V */
-#define BATT_LOW		12	/* 3.65V */
-#define BATT_CRITICAL		3	/* 3.55V */
-#define BATT_MINIMUM		(-2)	/* 3.49V */
-#define BATT_OFF		(-8)	/* 3.40V */
+#define BATT_FULL		40	/* 3.98V 90*/ 
+#define BATT_ALMOST_FULL	29	/* 3.85V 70*/
+#define BATT_HIGH		21	/* 3.75V 50*/
+#define BATT_MED		17	/* 3.71V 30*/
+#define BATT_LOW		12	/* 3.65V 15*/
+#define BATT_CRITICAL		3	/* 3.55V 5*/
+#define BATT_MINIMUM		(-2)	/* 3.49V 3*/
+#define BATT_OFF		(-8)	/* 3.40V 1*/
+
+#define BATT_EIGHT		35	/* 80%*/
+#define BATT_SIX		25	/* 60%*/
+#define BATT_FOUR		19	/* 40%*/
+#define BATT_TWO		15	/* 20%*/
+
 
 /*
  * InstinctQ Rev01 board Temperature Table

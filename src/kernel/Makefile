@@ -332,7 +332,7 @@ CHECK		= sparse
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 MODFLAGS	= -DMODULE
-CFLAGS_MODULE   = $(MODFLAGS)
+CFLAGS_MODULE   = $(MODFLAGS) -Os -march=armv6zk -mtune=arm1176jzf-s -mfloat-abi=softfp -mfpu=vfp
 AFLAGS_MODULE   = $(MODFLAGS)
 LDFLAGS_MODULE  =
 CFLAGS_KERNEL	=
