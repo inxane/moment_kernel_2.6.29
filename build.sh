@@ -24,44 +24,20 @@ KERNEL_DIR=$WORK_DIR/kernel
 MODULES_DIR=$WORK_DIR/modules
 
 
-build_kernel()
+build_kernel_prepare()
 {
-	echo *************************************
-	echo *           build kernel            *
-	echo *************************************
 		rm $OUT_DIR/zImage
 		cd $KERNEL_DIR
-
 		rm -f usr/initramfs_data.cpio.gz
-
-		echo make clean
 		make clean
-
-		echo make
-
-		make
-		if [ $? != 0 ] ; then
-			exit $?
-		fi
-
+		make prepare
+		make -j4
 }
 
 build_kernel_clean()
 {
-	echo *************************************
-	echo *           build kernel            *
-	echo *************************************
-		
 		cd $KERNEL_DIR
-
-		rm -f usr/initramfs_data.cpio.gz
-
-		echo make clean
-		make clean
-
-		echo make
-
-		make
+		make -j4
 		if [ $? != 0 ] ; then
 			exit $?
 		fi
@@ -76,7 +52,7 @@ build_kernel_clean()
 			make clean
 			cp $OUT_DIR/zImage /home/kareem/Downloads/boot\ kernel/system/zImage
 			cd /home/kareem/Downloads/boot\ kernel
-			rm inxanexxx.zip
+			rm inxane*
 			7z a inxanexxx.zip *
 				fi
 				;;
@@ -113,7 +89,7 @@ fi
 case "$OPTION" in
 	
 	-k)
-			build_kernel
+			build_kernel_prepare
 			build_modules
 			build_kernel_clean
 		;;
